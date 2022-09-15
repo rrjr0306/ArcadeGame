@@ -1,5 +1,6 @@
 // state
 let initialState;
+let currentPlayer = '';
 const gameState = {
     players: ['x', 'o'],
     board: [
@@ -10,8 +11,12 @@ const gameState = {
     score: {'x score': 0, 'o score': 0}
 };
 const gameArea = document.getElementById('gameBoard');
+// const resetButton = document.getElementById('resetButton');
+const cellClicker = document.getElementsByClassName('cell')[0];
+cellClicker.addEventListener('click', fillCell);
 
 
+buildInitialState()
 
 function buildInitialState() {
     for (let i = 0; i < 9; i++) {
@@ -21,8 +26,26 @@ function buildInitialState() {
         gameArea.appendChild(newCells);
     }
 }
+function fillCell(event) {
+    const target = event.target;
+    let text = target.innerText;
+    if (text) {
+        target.innerText = 'X'
+    }
+    else {
+        alert("Pick a different cell!")
+    }
+}
 
-buildInitialState()
+
+// resetButton.addEventListener('click', resetBoard);
+
+
+
+
+
+
+
 
 // render
 function renderState() {
