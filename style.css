@@ -1,5 +1,6 @@
 * {
     text-align: center;
+    color: black;
 }
 
 
@@ -19,6 +20,8 @@ body {
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
+    font-size: 65px;
+    align-items: center;
 }
 
 #gameBoard {

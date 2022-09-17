@@ -1,64 +1,116 @@
 // state
-let initialState;
-let currentPlayer = '';
+
+//  get board to display
+
+//get board to register clicks, start with X
+
+//switch user after every click
+
+// set winning parameters
+
+//disable board once a player has won or a tie is reached
+
+//clean up code
+
+
+
+//const's
+
+let currentPlayer = 'X';
+let gameRunning = false;
 const gameState = {
-    players: ['x', 'o'],
     board: [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-    ],
-    score: {'x score': 0, 'o score': 0}
+    null, null, null,
+    null, null, null,
+    null, null, null
+    ]
 };
+const cells = document.querySelectorAll('.cell')
 const gameArea = document.getElementById('gameBoard');
-// const resetButton = document.getElementById('resetButton');
-const cellClicker = document.getElementsByClassName('cell')[0];
-cellClicker.addEventListener('click', fillCell);
+const resetButton = document.getElementById('resetButton');
+const statusText = document.getElementById('statusMessage');
+const winningCells = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
 
 
-buildInitialState()
+//event listeners
+cells.forEach((cell) => cell.addEventListener('click', cellClicked));
+resetButton.addEventListener('click', resetGame);
 
-function buildInitialState() {
-    for (let i = 0; i < 9; i++) {
-        const newCells = document.createElement('div');
-        newCells.classList.add('cell');
-        newCells.dataset.index = i;
-        gameArea.appendChild(newCells);
+
+//initial state
+
+function buildInitialState(event) {
+    gameRunning = true;
+    gameState.board = [
+            null, null, null,
+            null, null, null,
+            null, null, null
+        ],
+    
+    currentPlayer = 'X';
+    cells.forEach((cell) => cell.innerText = '');
+    
     }
-}
-function fillCell(event) {
-    const target = event.target;
-    let text = target.innerText;
-    if (text) {
-        target.innerText = 'X'
+
+
+//functions
+
+
+function changePlayer() {
+    if (currentPlayer === 'X') {
+        currentPlayer = 'O'
     }
     else {
-        alert("Pick a different cell!")
+        currentPlayer = 'X'
     }
 }
 
-
-// resetButton.addEventListener('click', resetBoard);
-
-
-
+function changeIndex(cell, index) {
+    gameState.board[index] = currentPlayer;
+}
 
 
-
-
-
-// render
-function renderState() {
+function cellClicked(event) {
+    let cell = event.target;
+    let cellIndex = cell.dataset.cellIndex;
+    if (!cell.innerText) {
+        cell.innerText = currentPlayer;
+    }
+    else {
+        alert('Please choose another cell');
+    }
     
+    changeIndex(cell, cellIndex);
+    changePlayer();
+    console.log(gameState.board)
 }
 
-// maybe a dozen or so helper functions for tiny pieces of the interface
 
-// listeners
-function onBoardClick() {
-  // update state, maybe with another dozen or so helper functions...
-
-  renderState() // show the user the new state
+function checkWinner() {
+    for (let i = 0; i < 9; i++) {
+        const wins = winningCells[i];
+        const cellA = gameState.board[wins[0]];
+        const cellB = gameState.board[wins[1]];
+        const cellC = gameState.board[wins[2]];
+        
+        if (cellA === cellB && cellB === cellC) {
+            gameRunning = false;
+            alert(`${currentPlayer} has won!`);
+            break;
+        }
+    }
 }
-// const board = document.getElementById('board');
-// board.addEventListener('click', onBoardClick); // etc
+
+function resetGame() {
+    buildInitialState();
+}
+
