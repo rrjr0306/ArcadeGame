@@ -28,7 +28,7 @@ let board = [
 let statusMessage = document.getElementById('statusMessage');
 const cells = document.querySelectorAll('.cell')
 const gameArea = document.getElementById('gameBoard');
-const startButton = document.getElementById('startButton');
+const startButton = document.getElementById('startButton'); 
 const resetButton = document.getElementById('resetButton');
 const winningCells = [
     [0, 1, 2],
@@ -45,14 +45,15 @@ const winningCells = [
 //event listeners
 cells.forEach((cell) => cell.addEventListener('click', cellClicked));
 resetButton.addEventListener('click', resetGame);
-startButton.addEventListener('click', buildInitialState);
+startButton.addEventListener('click', startGame);
+
 
 //initial state
 
 function buildInitialState(event) {
     playerX = document.getElementById('playerX').value;
     if (!document.getElementById('playerO').value) {
-        playerO = 'computer'
+        playerO = 'Computer'
     }
     else {
         playerO = document.getElementById('playerO').value;
@@ -72,12 +73,15 @@ function buildInitialState(event) {
 
 //functions
 
-
+function startGame() {
+    buildInitialState();
+    statusMessage.innerText = `${playerX}, it's your turn`;
+    document.getElementById('playerO').value = 'Computer'
+}
 
 
 function changePlayer() {
     if (!gameRunning) {
-       
     }
         
     else if (currentPlayer === 'X') {
@@ -96,12 +100,12 @@ function changeIndex(cell, index) {
 
 
 function cellClicked(event) {
-    console.log(statusMessage.innerText)
     let cell = event.target;
     let cellIndex = cell.dataset.cellIndex;
+    console.log(cell);
+    console.log(cellIndex);
     
     if (gameRunning == false) {
-        console.log('game is not running')
         return;
     }
 
@@ -122,6 +126,15 @@ function cellClicked(event) {
     checkWinner();
     changePlayer();
 }
+
+function computerTurn() {
+    if (playerO == 'Computer' && currentPlayer == 'O') {
+        let randNum = Math.floor(Math.random() * 9);
+        let cell = 
+        changeIndex(randNum, )
+    }
+}
+
 
 
 function checkWinner() {
@@ -166,18 +179,15 @@ function checkWinner() {
         alert("It's a draw!")
         gameRunning = false;
     }
-
-    // else {
-    //     changePlayer();
-    // }
-
 }
 
 
 function resetGame() {
     playerX = '';
     playerO = '';
+    document.getElementById('playerX').value = '';
+    document.getElementById('playerO').value = '';
     buildInitialState();
 }
 
-// buildInitialState()
+buildInitialState()
