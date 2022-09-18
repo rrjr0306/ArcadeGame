@@ -18,13 +18,12 @@
 
 let currentPlayer = 'X';
 let gameRunning = false;
-const gameState = {
-    board: [
+let board = [
     null, null, null,
     null, null, null,
     null, null, null
-    ]
-};
+];
+
 const cells = document.querySelectorAll('.cell')
 const gameArea = document.getElementById('gameBoard');
 const resetButton = document.getElementById('resetButton');
@@ -50,7 +49,7 @@ resetButton.addEventListener('click', resetGame);
 
 function buildInitialState(event) {
     gameRunning = true;
-    gameState.board = [
+    board = [
             null, null, null,
             null, null, null,
             null, null, null
@@ -75,42 +74,79 @@ function changePlayer() {
 }
 
 function changeIndex(cell, index) {
-    gameState.board[index] = currentPlayer;
+    board[index] = currentPlayer;
 }
 
 
 function cellClicked(event) {
     let cell = event.target;
     let cellIndex = cell.dataset.cellIndex;
+    
+    if (gameRunning == false) {
+        console.log('game is not running')
+        return;
+    }
+
     if (!cell.innerText) {
         cell.innerText = currentPlayer;
     }
     else {
         alert('Please choose another cell');
     }
+
     
     changeIndex(cell, cellIndex);
-    changePlayer();
-    console.log(gameState.board)
+
+    if (!board.includes(null)) {
+    gameRunning = false;    
+    };
+
+    checkWinner();
+
+    console.log(board)
 }
 
 
 function checkWinner() {
-    for (let i = 0; i < 9; i++) {
+    
+    for (let i = 0; i < winningCells.length; i++) {
         const wins = winningCells[i];
-        const cellA = gameState.board[wins[0]];
-        const cellB = gameState.board[wins[1]];
-        const cellC = gameState.board[wins[2]];
-        
-        if (cellA === cellB && cellB === cellC) {
+        const cellA = board[wins[0]];
+        const cellB = board[wins[1]];
+        const cellC = board[wins[2]];
+
+        if(cellA == null || cellB == null || cellC == null){
+            continue;
+        }
+
+        if(cellA == cellB && cellB == cellC){
+            alert(`${currentPlayer} has won!`)
             gameRunning = false;
-            alert(`${currentPlayer} has won!`);
+            console.log(`${currentPlayer} has won!!!`)
             break;
         }
+
     }
+
+
+    if (!gameRunning) {
+        console.log("game isn't running here either!")
+    }
+
+    if (!board.includes(null)) {
+        alert("It's a draw!")
+        gameRunning = false;
+    }
+
+    else {
+        changePlayer();
+    }
+
 }
+
 
 function resetGame() {
     buildInitialState();
 }
 
+buildInitialState()

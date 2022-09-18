@@ -7,8 +7,8 @@ enter our names and have them displayed
 have our order chosen for us by the game
 XXX take turns placing our marks in empty spaces
 XXX not be able to place our marks in an occupied space
-be told when a move causes a player to win, or to draw
-start the game over without having to reset the browser
+XXX be told when a move causes a player to win, or to draw
+XXX start the game over without having to reset the browser
 As a user playing a one player game I want to:
 
 see the name 'Computer' displayed as my opponent
