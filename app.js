@@ -25,12 +25,11 @@ let board = [
     null, null, null,
     null, null, null
 ];
-
+let statusMessage = document.getElementById('statusMessage');
 const cells = document.querySelectorAll('.cell')
 const gameArea = document.getElementById('gameBoard');
 const startButton = document.getElementById('startButton');
 const resetButton = document.getElementById('resetButton');
-const statusText = document.getElementById('statusMessage');
 const winningCells = [
     [0, 1, 2],
     [3, 4, 5],
@@ -67,19 +66,27 @@ function buildInitialState(event) {
     
     currentPlayer = 'X';
     cells.forEach((cell) => cell.innerText = '');
-    
-    }
+    statusMessage.innerText = `Fill out your names:`
+}
 
 
 //functions
 
 
+
+
 function changePlayer() {
-    if (currentPlayer === 'X') {
-        currentPlayer = 'O'
+    if (!gameRunning) {
+       
+    }
+        
+    else if (currentPlayer === 'X') {
+        currentPlayer = 'O';
+        statusMessage.innerHTML = `It's ${playerO}'s turn`
     }
     else {
         currentPlayer = 'X'
+        statusMessage.innerHTML = `It's ${playerX}'s turn`
     }
 }
 
@@ -89,6 +96,7 @@ function changeIndex(cell, index) {
 
 
 function cellClicked(event) {
+    console.log(statusMessage.innerText)
     let cell = event.target;
     let cellIndex = cell.dataset.cellIndex;
     
@@ -111,8 +119,8 @@ function cellClicked(event) {
     gameRunning = false;    
     };
 
-    console.log(currentPlayer)
     checkWinner();
+    changePlayer();
 }
 
 
@@ -129,26 +137,22 @@ function checkWinner() {
         }
 
         if(cellA == cellB && cellB == cellC){
-            // if (currentPlayer = 'X') {
-            //     alert(`${playerX} has won!`);
-            //     gameRunning = false;
-            //     break;
-            // }
+            if (currentPlayer == 'X') {
+                alert(`${playerX} has won!`);
+                statusMessage.innerText = `${playerX} won!`;
+                console.log(statusMessage.innerHTML);
+                gameRunning = false;
+                break;
+            }
 
-            // else if (currentPlayer = 'O') {
-            //     alert(`${playerO} has won!`);
-            //     gameRunning = false;
-            //     break;
-            // }
-            
-            
-            
-            
-            
-            alert(`${currentPlayer} has won!`)
-            gameRunning = false;
-            console.log(`${currentPlayer} has won!!!`)
-            break;
+            else {
+                alert(`${playerO} has won!`);
+                statusMessage.innerText = `${playerO} won!`;
+                console.log(statusMessage.innerHTML);
+                gameRunning = false;
+                break;
+            }
+                       
         }
 
     }
@@ -163,9 +167,9 @@ function checkWinner() {
         gameRunning = false;
     }
 
-    else {
-        changePlayer();
-    }
+    // else {
+    //     changePlayer();
+    // }
 
 }
 
@@ -174,6 +178,6 @@ function resetGame() {
     playerX = '';
     playerO = '';
     buildInitialState();
-    }
+}
 
 // buildInitialState()
