@@ -42,10 +42,12 @@ const winningCells = [
 ];
 
 
+
 //event listeners
 cells.forEach((cell) => cell.addEventListener('click', cellClicked));
 resetButton.addEventListener('click', resetGame);
 startButton.addEventListener('click', startGame);
+
 
 
 //initial state
@@ -71,6 +73,7 @@ function buildInitialState(event) {
 }
 
 
+
 //functions
 
 function startGame() {
@@ -81,17 +84,19 @@ function startGame() {
 
 
 function changePlayer() {
-    if (!gameRunning) {
-    }
-        
-    else if (currentPlayer === 'X') {
+       
+    if (currentPlayer === 'X') {
         currentPlayer = 'O';
-        statusMessage.innerHTML = `It's ${playerO}'s turn`
+        statusMessage.innerHTML = `It's ${playerO}'s turn`;
+        console.log('wtf X');
     }
-    else {
+    else if (currentPlayer === 'O') {
         currentPlayer = 'X'
-        statusMessage.innerHTML = `It's ${playerX}'s turn`
+        statusMessage.innerHTML = `It's ${playerX}'s turn`;
+        console.log('wtf O');
     }
+
+
 }
 
 function changeIndex(cell, index) {
@@ -102,9 +107,7 @@ function changeIndex(cell, index) {
 function cellClicked(event) {
     let cell = event.target;
     let cellIndex = cell.dataset.cellIndex;
-    console.log(cell);
-    console.log(cellIndex);
-    
+
     if (gameRunning == false) {
         return;
     }
@@ -125,13 +128,29 @@ function cellClicked(event) {
 
     checkWinner();
     changePlayer();
+    computerTurn();
 }
 
 function computerTurn() {
-    if (playerO == 'Computer' && currentPlayer == 'O') {
-        let randNum = Math.floor(Math.random() * 9);
-        let cell = 
-        changeIndex(randNum, )
+    if (gameRunning) {
+        const indexes = [];
+        if (playerO == 'Computer' && currentPlayer == 'O') {
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] == null) {
+                    indexes.push(i);
+                }
+            }
+            const randNum = indexes[Math.floor(Math.random() * indexes.length)];
+            let cell = document.getElementById(randNum)
+            let cellIndex = cell.dataset.cellIndex;
+            cell.innerText = 'O'
+            changeIndex(cell, cellIndex);
+        
+        }
+        changePlayer();
+    }
+    else {
+        return; 
     }
 }
 
