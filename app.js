@@ -16,7 +16,7 @@
 
 //const's
 
-let currentPlayer = 'X';
+var currentPlayer
 let gameRunning = false;
 let playerX;
 let playerO;
@@ -66,8 +66,7 @@ function buildInitialState(event) {
             null, null, null,
             null, null, null
         ],
-    
-    currentPlayer = 'X';
+    currentPlayer = Math.random() < 0.5 ? 'X' : 'O';
     cells.forEach((cell) => cell.innerText = '');
     statusMessage.innerText = `Fill out your names:`
 }
@@ -78,25 +77,33 @@ function buildInitialState(event) {
 
 function startGame() {
     buildInitialState();
-    statusMessage.innerText = `${playerX}, it's your turn`;
-    document.getElementById('playerO').value = 'Computer'
+    if (currentPlayer == 'X') {
+        statusMessage.innerText = `${playerX}, it's your turn`;
+    }
+
+    else {
+        statusMessage.innerText = `${playerO}, it's your turn`;
+        computerTurn();
+    }    
 }
 
 
 function changePlayer() {
-       
-    if (currentPlayer === 'X') {
-        currentPlayer = 'O';
-        statusMessage.innerHTML = `It's ${playerO}'s turn`;
-        console.log('wtf X');
+    if (gameRunning) {   
+        if (currentPlayer === 'X') {
+            currentPlayer = 'O';
+            statusMessage.innerHTML = `It's ${playerO}'s turn`;
+            console.log('wtf X');
+        }
+        else if (currentPlayer === 'O') {
+            currentPlayer = 'X'
+            statusMessage.innerHTML = `It's ${playerX}'s turn`;
+            console.log('wtf O');
+        }
     }
-    else if (currentPlayer === 'O') {
-        currentPlayer = 'X'
-        statusMessage.innerHTML = `It's ${playerX}'s turn`;
-        console.log('wtf O');
+    else {
+        return;
     }
-
-
 }
 
 function changeIndex(cell, index) {
@@ -128,7 +135,9 @@ function cellClicked(event) {
 
     checkWinner();
     changePlayer();
-    computerTurn();
+    if (playerO == 'Computer') {
+        setTimeout(computerTurn, 1000);
+    }    
 }
 
 function computerTurn() {
@@ -140,6 +149,7 @@ function computerTurn() {
                     indexes.push(i);
                 }
             }
+            document.getElementById('playerO').value = 'Computer';
             const randNum = indexes[Math.floor(Math.random() * indexes.length)];
             let cell = document.getElementById(randNum)
             let cellIndex = cell.dataset.cellIndex;
@@ -168,35 +178,41 @@ function checkWinner() {
             continue;
         }
 
-        if(cellA == cellB && cellB == cellC){
-            if (currentPlayer == 'X') {
-                alert(`${playerX} has won!`);
-                statusMessage.innerText = `${playerX} won!`;
-                console.log(statusMessage.innerHTML);
-                gameRunning = false;
-                break;
-            }
 
-            else {
-                alert(`${playerO} has won!`);
-                statusMessage.innerText = `${playerO} won!`;
-                console.log(statusMessage.innerHTML);
-                gameRunning = false;
-                break;
-            }
-                       
-        }
+        if (gameRunning) {
+            if(cellA == cellB && cellB == cellC){
+                if (currentPlayer == 'X') {
+                    alert(`${playerX} has won!`);
+                    statusMessage.innerText = `${playerX} won!`;
+                    console.log(statusMessage.innerHTML);
+                    gameRunning = false;
+                    break;
+                }
 
+                else {
+                    alert(`${playerO} has won!`);
+                    statusMessage.innerText = `${playerO} won!`;
+                    console.log(statusMessage.innerHTML);
+                    gameRunning = false;
+                    break;
+                }
+                        
+            }
+        }    
     }
 
+    // if (!board.includes(null)) {
+    //     statusMessage.innerText = `It's a draw!`;
+    //     alert("It's a draw!");
+    //     gameRunning = false;
+    // }
 
     if (!gameRunning) {
-        console.log("game isn't running here either!")
-    }
-
-    if (!board.includes(null)) {
-        alert("It's a draw!")
-        gameRunning = false;
+        if (!board.includes(null)) {
+            statusMessage.innerText = `It's a draw!`;
+            alert("It's a draw!");
+            gameRunning = false;
+        }
     }
 }
 
