@@ -4,6 +4,9 @@
     justify-content: center;
 }
 
+button {
+    width: 50px;
+}
 
 
 
@@ -30,4 +33,15 @@ body {
     grid-template-columns: repeat(3, auto);
     width: 200px;
     margin: 50px auto;
+}
+
+.players {
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.buttons {
+    padding-top: 35px;
+    display: flex;
+    justify-content: space-evenly;
 }

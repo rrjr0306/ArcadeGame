@@ -18,6 +18,8 @@
 
 let currentPlayer = 'X';
 let gameRunning = false;
+let playerX;
+let playerO;
 let board = [
     null, null, null,
     null, null, null,
@@ -26,6 +28,7 @@ let board = [
 
 const cells = document.querySelectorAll('.cell')
 const gameArea = document.getElementById('gameBoard');
+const startButton = document.getElementById('startButton');
 const resetButton = document.getElementById('resetButton');
 const statusText = document.getElementById('statusMessage');
 const winningCells = [
@@ -43,11 +46,18 @@ const winningCells = [
 //event listeners
 cells.forEach((cell) => cell.addEventListener('click', cellClicked));
 resetButton.addEventListener('click', resetGame);
-
+startButton.addEventListener('click', buildInitialState);
 
 //initial state
 
 function buildInitialState(event) {
+    playerX = document.getElementById('playerX').value;
+    if (!document.getElementById('playerO').value) {
+        playerO = 'computer'
+    }
+    else {
+        playerO = document.getElementById('playerO').value;
+    }
     gameRunning = true;
     board = [
             null, null, null,
@@ -101,9 +111,8 @@ function cellClicked(event) {
     gameRunning = false;    
     };
 
+    console.log(currentPlayer)
     checkWinner();
-
-    console.log(board)
 }
 
 
@@ -120,6 +129,22 @@ function checkWinner() {
         }
 
         if(cellA == cellB && cellB == cellC){
+            // if (currentPlayer = 'X') {
+            //     alert(`${playerX} has won!`);
+            //     gameRunning = false;
+            //     break;
+            // }
+
+            // else if (currentPlayer = 'O') {
+            //     alert(`${playerO} has won!`);
+            //     gameRunning = false;
+            //     break;
+            // }
+            
+            
+            
+            
+            
             alert(`${currentPlayer} has won!`)
             gameRunning = false;
             console.log(`${currentPlayer} has won!!!`)
@@ -146,7 +171,9 @@ function checkWinner() {
 
 
 function resetGame() {
+    playerX = '';
+    playerO = '';
     buildInitialState();
-}
+    }
 
-buildInitialState()
+// buildInitialState()
