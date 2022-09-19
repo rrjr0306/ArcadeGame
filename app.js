@@ -53,7 +53,6 @@ startButton.addEventListener('click', startGame);
 //initial state
 
 function buildInitialState(event) {
-    console.log(`start of buildstate: ${currentPlayer}`);  
     gameRunning = true;
     board = [
             null, null, null,
@@ -63,7 +62,6 @@ function buildInitialState(event) {
     currentPlayer = Math.random() < 0.5 ? 'X' : 'O';
     cells.forEach((cell) => cell.innerText = '');
     statusMessage.innerText = `Fill out your names:`
-    console.log(`end of buildstate: ${currentPlayer}`);  
 }
 
 
@@ -71,7 +69,6 @@ function buildInitialState(event) {
 //functions
 
 function startGame() {
-    console.log(`start of start game: ${currentPlayer}`);  
     if (document.getElementById('playerX').value == '') {
         alert('Please enter your name');
         return;
@@ -96,12 +93,10 @@ function startGame() {
     else {
         computerTurn();
     }
-    console.log(`end of start game: ${currentPlayer}`);
 }
 
 
 function changePlayer() {
-    console.log(`start of changePlayer: ${currentPlayer}`);
     if (gameRunning) {
         if (currentPlayer == 'X') {
             currentPlayer = 'O';
@@ -115,46 +110,37 @@ function changePlayer() {
     else {
         return;
     }
-    console.log(`end of changePlayer: ${currentPlayer}`); 
 }
 
 
 
 function changeIndex(cell, index) {
     board[index] = currentPlayer;
+    cell.innerText = currentPlayer;
 }
 
 
 function cellClicked(event) {
-    console.log(`start of cellClicked: ${currentPlayer}`);
-    console.log(!board.includes(null));
     let cell = event.target;
     let cellIndex = cell.dataset.cellIndex;
-    // checkWinner();
     if (gameRunning == false) {
         return;
     }
 
-    if (!cell.innerText) {
-        cell.innerText = currentPlayer;
-    }
-    else {
+    if (cell.innerText != '') {
         alert('Please choose another cell');
+        return;
     }
 
-    
     changeIndex(cell, cellIndex);
     checkWinner();
     changePlayer();
     if (playerO == 'Computer') {
         setTimeout(computerTurn, 1000);
     }
-
-    console.log(`end of cellClicked: ${currentPlayer}`); 
 }
 
 function computerTurn() {
-    console.log(`start of computerTurn: ${currentPlayer}`); 
     if (gameRunning) {
         const indexes = [];
         if (playerO == 'Computer' && currentPlayer == 'O') {
@@ -177,13 +163,11 @@ function computerTurn() {
     else {
     checkWinner();
     }
-    console.log(`end of computerTurn: ${currentPlayer}`); 
 }
 
 
 
 function checkWinner() {
-    console.log(`start of checkWinner: ${currentPlayer}`); 
     for (let i = 0; i < winningCells.length; i++) {
         const wins = winningCells[i];
         const cellA = board[wins[0]];
@@ -223,7 +207,6 @@ function checkWinner() {
             continue;
         }
     }
-    console.log(`end of checkWinner: ${currentPlayer}`); 
 }
 
 function resetGame() {
