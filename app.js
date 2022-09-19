@@ -53,6 +53,7 @@ startButton.addEventListener('click', startGame);
 //initial state
 
 function buildInitialState(event) {
+    console.log(`start of buildstate: ${currentPlayer}`);  
     playerX = document.getElementById('playerX').value;
     if (!document.getElementById('playerO').value) {
         playerO = 'Computer'
@@ -69,6 +70,7 @@ function buildInitialState(event) {
     currentPlayer = Math.random() < 0.5 ? 'X' : 'O';
     cells.forEach((cell) => cell.innerText = '');
     statusMessage.innerText = `Fill out your names:`
+    console.log(`end of buildstate: ${currentPlayer}`);  
 }
 
 
@@ -76,6 +78,12 @@ function buildInitialState(event) {
 //functions
 
 function startGame() {
+    console.log(`start of start game: ${currentPlayer}`);  
+    if (document.getElementById('playerX').value == '') {
+        alert('Please enter your name');
+        return;
+    }
+
     buildInitialState();
     if (currentPlayer == 'X') {
         statusMessage.innerText = `${playerX}, it's your turn`;
@@ -84,34 +92,41 @@ function startGame() {
     else {
         statusMessage.innerText = `${playerO}, it's your turn`;
         computerTurn();
-    }    
+    }  
+    console.log(`end of start game: ${currentPlayer}`);
 }
 
 
 function changePlayer() {
-    if (gameRunning) {   
+    console.log(`start of changePlayer: ${currentPlayer}`); 
+    if (!board.includes(null)) {
+        gameRunning = false;
+        checkWinner();
+    } 
+    
+    else {    
+         
         if (currentPlayer === 'X') {
             currentPlayer = 'O';
             statusMessage.innerHTML = `It's ${playerO}'s turn`;
-            console.log('wtf X');
         }
         else if (currentPlayer === 'O') {
             currentPlayer = 'X'
             statusMessage.innerHTML = `It's ${playerX}'s turn`;
-            console.log('wtf O');
-        }
+            }
     }
-    else {
-        return;
-    }
+    console.log(`end of changePlayer: ${currentPlayer}`); 
 }
 
 function changeIndex(cell, index) {
+    console.log(`start of changeIndex: ${currentPlayer}`); 
     board[index] = currentPlayer;
+    console.log(`end of changeIndex: ${currentPlayer}`); 
 }
 
 
 function cellClicked(event) {
+    console.log(`start of cellClicked: ${currentPlayer}`); 
     let cell = event.target;
     let cellIndex = cell.dataset.cellIndex;
 
@@ -132,15 +147,18 @@ function cellClicked(event) {
     if (!board.includes(null)) {
     gameRunning = false;    
     };
-
-    checkWinner();
+    checkWinner();   
     changePlayer();
+    
     if (playerO == 'Computer') {
         setTimeout(computerTurn, 1000);
-    }    
+    }
+    drawCheck();
+    console.log(`end of cellClicked: ${currentPlayer}`); 
 }
 
 function computerTurn() {
+    console.log(`start of computerTurn: ${currentPlayer}`); 
     if (gameRunning) {
         const indexes = [];
         if (playerO == 'Computer' && currentPlayer == 'O') {
@@ -157,17 +175,20 @@ function computerTurn() {
             changeIndex(cell, cellIndex);
         
         }
+        drawCheck();
+        checkWinner();
         changePlayer();
     }
     else {
-        return; 
+    checkWinner();
     }
+    console.log(`end of computerTurn: ${currentPlayer}`); 
 }
 
 
 
 function checkWinner() {
-    
+    console.log(`start of checkWinner: ${currentPlayer}`); 
     for (let i = 0; i < winningCells.length; i++) {
         const wins = winningCells[i];
         const cellA = board[wins[0]];
@@ -182,16 +203,16 @@ function checkWinner() {
         if (gameRunning) {
             if(cellA == cellB && cellB == cellC){
                 if (currentPlayer == 'X') {
-                    alert(`${playerX} has won!`);
-                    statusMessage.innerText = `${playerX} won!`;
+                    alert(`${playerO} has won!`);
+                    statusMessage.innerText = `${playerO} won!`;
                     console.log(statusMessage.innerHTML);
                     gameRunning = false;
                     break;
                 }
 
                 else {
-                    alert(`${playerO} has won!`);
-                    statusMessage.innerText = `${playerO} won!`;
+                    alert(`${playerX} has won!`);
+                    statusMessage.innerText = `${playerX} won!`;
                     console.log(statusMessage.innerHTML);
                     gameRunning = false;
                     break;
@@ -201,19 +222,32 @@ function checkWinner() {
         }    
     }
 
+    drawCheck();
+
     // if (!board.includes(null)) {
     //     statusMessage.innerText = `It's a draw!`;
     //     alert("It's a draw!");
     //     gameRunning = false;
     // }
 
-    if (!gameRunning) {
-        if (!board.includes(null)) {
-            statusMessage.innerText = `It's a draw!`;
-            alert("It's a draw!");
-            gameRunning = false;
-        }
+    // if (!gameRunning) {
+    //     if (!board.includes(null)) {
+    //         statusMessage.innerText = `It's a draw!`;
+    //         alert("It's a draw!");
+    //         gameRunning = false;
+    //     }
+    // }
+    console.log(`end of checkWinner: ${currentPlayer}`); 
+}
+
+function drawCheck() {
+    console.log(`start of drawCheck: ${currentPlayer}`); 
+    if (gameRunning && !board.includes(null)) {
+        statusMessage.innerText = `It's a draw!`;
+        alert("It's a draw!");
+        gameRunning = false;
     }
+    console.log(`end of drawCheck: ${currentPlayer}`); 
 }
 
 
