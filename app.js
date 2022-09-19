@@ -16,7 +16,7 @@
 
 //const's
 
-let currentPlayer
+let currentPlayer;
 let gameRunning = false;
 let playerX;
 let playerO;
@@ -141,29 +141,73 @@ function cellClicked(event) {
 }
 
 function computerTurn() {
-    if (gameRunning) {
-        const indexes = [];
-        if (playerO == 'Computer' && currentPlayer == 'O') {
-            for (let i = 0; i < board.length; i++) {
-                if (board[i] == null) {
-                    indexes.push(i);
-                }
-            }
-            document.getElementById('playerO').value = 'Computer';
-            const randNum = indexes[Math.floor(Math.random() * indexes.length)];
-            let cell = document.getElementById(randNum)
-            let cellIndex = cell.dataset.cellIndex;
-            cell.innerText = 'O'
-            changeIndex(cell, cellIndex);
+    for (let i = 0; i < winningCells.length; i++) {
+        const wins = winningCells[i];
+        const cellA = board[wins[0]];
+        const cellB = board[wins[1]];
+        const cellC = board[wins[2]];
         
+        if(cellA == 'O' && cellB == 'O' && cellC == null) {
+            changeIndex(cell, cellC);
+            break;
         }
-        checkWinner();
-        changePlayer();
+
+        else if(cellA == null && cellB == 'O' && cellC == 'O') {
+            changeIndex(cell, cellA);
+            break;
+        }
+
+        else if(cellA == 'O' && cellB == null && cellC == 'O') {
+            changeIndex(cell, cellB);
+            break;
+        }
+
+        else {
+            const indexes = [];
+            if (playerO == 'Computer' && currentPlayer == 'O') {
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] == null) {
+                        indexes.push(i);
+                    }
+                }
+                document.getElementById('playerO').value = 'Computer';
+                const randNum = indexes[Math.floor(Math.random() * indexes.length)];
+                let cell = document.getElementById(randNum)
+                let cellIndex = cell.dataset.cellIndex;
+                cell.innerText = 'O'
+                changeIndex(cell, cellIndex);
+                break;
+            }
+        }
+
     }
-    else {
     checkWinner();
-    }
+    changePlayer();
 }
+
+
+    // if (gameRunning) {
+        // const indexes = [];
+        // if (playerO == 'Computer' && currentPlayer == 'O') {
+        //     for (let i = 0; i < board.length; i++) {
+        //         if (board[i] == null) {
+        //             indexes.push(i);
+        //         }
+        //     }
+        //     document.getElementById('playerO').value = 'Computer';
+        //     const randNum = indexes[Math.floor(Math.random() * indexes.length)];
+        //     let cell = document.getElementById(randNum)
+        //     let cellIndex = cell.dataset.cellIndex;
+        //     cell.innerText = 'O'
+        //     changeIndex(cell, cellIndex);
+        // }
+//         checkWinner();
+//         changePlayer();
+//     }
+//     else {
+//     checkWinner();
+//     }
+// }
 
 
 
