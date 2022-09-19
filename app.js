@@ -147,17 +147,21 @@ function computerTurn() {
         const cellB = board[wins[1]];
         const cellC = board[wins[2]];
         
-        if(cellA == 'O' && cellB == 'O' && cellC == null) {
+        
+        if(cellA == 'O' && cellB == 'O' && cellC == null) {            
+            let cell = document.getElementById(findIndex(cellC));
             changeIndex(cell, cellC);
             break;
         }
 
         else if(cellA == null && cellB == 'O' && cellC == 'O') {
+            let cell = document.getElementById(findIndex(cellA));
             changeIndex(cell, cellA);
             break;
         }
 
         else if(cellA == 'O' && cellB == null && cellC == 'O') {
+            let cell = document.getElementById(findIndex(cellB));
             changeIndex(cell, cellB);
             break;
         }
@@ -184,33 +188,6 @@ function computerTurn() {
     checkWinner();
     changePlayer();
 }
-
-
-    // if (gameRunning) {
-        // const indexes = [];
-        // if (playerO == 'Computer' && currentPlayer == 'O') {
-        //     for (let i = 0; i < board.length; i++) {
-        //         if (board[i] == null) {
-        //             indexes.push(i);
-        //         }
-        //     }
-        //     document.getElementById('playerO').value = 'Computer';
-        //     const randNum = indexes[Math.floor(Math.random() * indexes.length)];
-        //     let cell = document.getElementById(randNum)
-        //     let cellIndex = cell.dataset.cellIndex;
-        //     cell.innerText = 'O'
-        //     changeIndex(cell, cellIndex);
-        // }
-//         checkWinner();
-//         changePlayer();
-//     }
-//     else {
-//     checkWinner();
-//     }
-// }
-
-
-
 function checkWinner() {
     for (let i = 0; i < winningCells.length; i++) {
         const wins = winningCells[i];
